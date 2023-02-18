@@ -60,7 +60,6 @@
             headers: headers,
         }
 
-        }
         response = await fetch("http:\/\/localhost:8080/handle", body);
         data = await response.json();
         sent.innerHTML = JSON.stringify(payload, undefined, 4);
@@ -71,7 +70,7 @@
         } else {
             output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
         }
-    }
+    })
 
     authBrokerBtn.addEventListener("click", async function() {
 
