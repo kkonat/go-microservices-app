@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"html/template"
+	"log"
 	"time"
 
 	"github.com/vanng822/go-premailer/premailer"
@@ -35,7 +36,7 @@ func (m *Mail) SendSMTPMessage(msg Message) error {
 		msg.From = m.FromAddress
 	}
 	if msg.FromName == "" {
-		msg.From = m.FromName
+		msg.FromName = m.FromName
 	}
 
 	data := map[string]any{
@@ -70,6 +71,7 @@ func (m *Mail) SendSMTPMessage(msg Message) error {
 		return err
 	}
 	email := mail.NewMSG()
+
 	email.SetFrom(msg.From).
 		AddTo(msg.To).
 		SetSubject(msg.Subject)
@@ -85,6 +87,7 @@ func (m *Mail) SendSMTPMessage(msg Message) error {
 
 	err = email.Send(smtpClient)
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 
