@@ -9,7 +9,9 @@
                 <a id="brokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test broker</a>
                 <a id="authBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Auth</a>
                 <a id="logBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Log</a>
+                <a id="logGBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test gRPC Log</a>
                 <a id="mailBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Mail</a>
+                
 
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted">Output shows here...</span>
@@ -93,6 +95,36 @@
         }
 
         response = await fetch("http:\/\/localhost:8080/handle", body);
+        data = await response.json();
+        sent.innerHTML = JSON.stringify(payload, undefined, 4);
+        received.innerHTML = JSON.stringify(data, undefined, 4);
+        if (data.error) {
+            output.innerHTML += `<br><strong>Error:</string> ${data.message}`;
+            console.log(data.message);
+        } else {
+            output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
+        }
+    })
+
+    logGBtn.addEventListener("click", async function() {
+        const payload = {
+            action: "log",
+            log: {
+                name: "event",
+                data: "Some gRPC data",
+            }
+        }
+
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        const body = {
+            method: "POST",
+            body: JSON.stringify(payload),
+            headers: headers,
+        }
+
+        response = await fetch("http:\/\/localhost:8080/log-grpc", body);
         data = await response.json();
         sent.innerHTML = JSON.stringify(payload, undefined, 4);
         received.innerHTML = JSON.stringify(data, undefined, 4);
