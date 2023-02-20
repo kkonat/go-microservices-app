@@ -15,7 +15,7 @@ type Consumer struct {
 	queueName string
 }
 
-func NewCOnsumer(conn *amqp.Connection) (Consumer, error) {
+func NewConsumer(conn *amqp.Connection) (Consumer, error) {
 	consumer := Consumer{
 		conn: conn,
 	}
@@ -81,7 +81,7 @@ func (consumer *Consumer) Listen(topics []string) error {
 		}
 	}()
 
-	fmt.Printf("Waiting for message [Exchange, Queue], [logs_topic, %s]\n], q.Name")
+	fmt.Printf("Waiting for message [Exchange, Queue], [logs_topic, %s]\n", q.Name)
 
 	<-forever
 	return nil
